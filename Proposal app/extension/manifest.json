@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Focus Guard",
+  "version": "1.0",
+  "description": "Detects distracting URLs and notifies Focus Guard desktop app.",
+  "permissions": ["tabs", "webNavigation"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://www.youtube.com/*", "*://youtube.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

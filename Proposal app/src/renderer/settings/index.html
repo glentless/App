@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' file: data:; media-src 'self' file:; style-src 'self' 'unsafe-inline';" />
+  <title>Focus Guard — Settings</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <span class="logo-icon">🛡</span>
+        <span class="logo-text">Focus Guard</span>
+      </div>
+      <nav>
+        <button class="nav-btn active" data-tab="reminders">Reminders</button>
+        <button class="nav-btn" data-tab="rules">Rules</button>
+        <button class="nav-btn" data-tab="setup">Extension Setup</button>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="content">
+
+      <!-- ── REMINDERS TAB ── -->
+      <section id="tab-reminders" class="tab active">
+        <div class="tab-header">
+          <h1>Reminders</h1>
+          <button class="btn-primary" id="add-reminder-btn">+ Add Reminder</button>
+        </div>
+        <p class="tab-desc">A reminder is what gets shown when a blocked URL is detected — an image and/or a voice recording.</p>
+        <div id="reminders-list" class="card-grid"></div>
+
+        <!-- Add/Edit form (hidden by default) -->
+        <div id="reminder-form-wrap" class="form-card hidden">
+          <h2 id="reminder-form-title">New Reminder</h2>
+          <input type="hidden" id="reminder-id" />
+          <div class="field">
+            <label>Name</label>
+            <input type="text" id="reminder-name" placeholder="e.g. My Goals" />
+          </div>
+          <div class="field">
+            <label>Image <span class="hint">(shown full-screen behind popup)</span></label>
+            <div class="file-row">
+              <span id="image-filename" class="file-label">No file selected</span>
+              <button class="btn-secondary" id="pick-image-btn">Browse…</button>
+            </div>
+            <img id="image-preview" class="media-preview hidden" alt="preview" />
+          </div>
+          <div class="field">
+            <label>Voice Recording <span class="hint">(.mp3, .wav, .ogg)</span></label>
+            <div class="file-row">
+              <span id="audio-filename" class="file-label">No file selected</span>
+              <button class="btn-secondary" id="pick-audio-btn">Browse…</button>
+            </div>
+            <audio id="audio-preview" class="hidden" controls></audio>
+          </div>
+          <div class="field">
+            <label>Optional Text Message</label>
+            <input type="text" id="reminder-message" placeholder="e.g. Remember your goals!" maxlength="120" />
+          </div>
+          <div class="field field-inline">
+            <label>Countdown (seconds)</label>
+            <input type="number" id="reminder-countdown" value="10" min="3" max="120" style="width:80px" />
+          </div>
+          <div class="form-actions">
+            <button class="btn-secondary" id="reminder-cancel-btn">Cancel</button>
+            <button class="btn-primary" id="reminder-save-btn">Save Reminder</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── RULES TAB ── -->
+      <section id="tab-rules" class="tab">
+        <div class="tab-header">
+          <h1>Rules</h1>
+          <button class="btn-primary" id="add-rule-btn">+ Add Rule</button>
+        </div>
+        <p class="tab-desc">Rules define which URLs or YouTube channels trigger a reminder.</p>
+        <div id="rules-list" class="card-grid"></div>
+
+        <!-- Add/Edit form (hidden by default) -->
+        <div id="rule-form-wrap" class="form-card hidden">
+          <h2 id="rule-form-title">New Rule</h2>
+          <input type="hidden" id="rule-id" />
+          <div class="field">
+            <label>Name</label>
+            <input type="text" id="rule-name" placeholder="e.g. Gaming Channels" />
+          </div>
+          <div class="field">
+            <label>URL Patterns <span class="hint">(one per line, use * as wildcard)</span></label>
+            <textarea id="rule-patterns" rows="4" placeholder="*youtube.com/@MrBeast*&#10;*youtube.com/@PewDiePie*&#10;*twitch.tv/xqc*"></textarea>
+          </div>
+          <div class="field">
+            <label>YouTube Channel Keywords <span class="hint">(comma-separated, matches video author)</span></label>
+            <input type="text" id="rule-keywords" placeholder="MrBeast, PewDiePie, xQc" />
+          </div>
+          <div class="field">
+            <label>Reminder to show</label>
+            <select id="rule-reminder-select">
+              <option value="">— select a reminder —</option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button class="btn-secondary" id="rule-cancel-btn">Cancel</button>
+            <button class="btn-primary" id="rule-save-btn">Save Rule</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── EXTENSION SETUP TAB ── -->
+      <section id="tab-setup" class="tab">
+        <div class="tab-header">
+          <h1>Chrome Extension Setup</h1>
+        </div>
+        <p class="tab-desc">Focus Guard needs a Chrome extension to detect which URLs you visit. Install it once — it's unpacked directly from this app's folder.</p>
+        <div class="setup-steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>Open Chrome Extensions</strong>
+              <p>In Chrome, navigate to <code>chrome://extensions</code></p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>Enable Developer Mode</strong>
+              <p>Toggle "Developer mode" in the top-right corner of the extensions page.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>Load the Extension</strong>
+              <p>Click "Load unpacked" and select the folder shown below:</p>
+              <div class="path-box" id="extension-path-box">Loading path…</div>
+              <button class="btn-secondary" id="copy-path-btn" style="margin-top:10px">Copy Path</button>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <strong>Done!</strong>
+              <p>The "Focus Guard" extension will appear in your extensions list. Make sure it's enabled.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
