@@ -1,0 +1,10 @@
+# OS junk
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Secrets (just in case)
+.env
+.env.local
+*.pem
+*.key
